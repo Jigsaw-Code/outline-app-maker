@@ -1,13 +1,6 @@
-# Outline SDK Web Wrapper
+# Outline App Maker
 
 ## Getting Started
-
-Clone the SDK to a local folder and navigate to the `x/examples/website-wrapper-app` directory.
-
-```sh
-git clone https://github.com/Jigsaw-Code/outline-sdk
-cd outline-sdk/x/examples/website-wrapper-app
-```
 
 To verify that your system has the necessary dependencies to generate your web wrapper project, run the web wrapper doctor:
 
