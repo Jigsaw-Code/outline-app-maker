@@ -1,0 +1,82 @@
+name: Quality Checks
+
+on:
+  pull_request:
+    types: [opened,synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  build_android:
+    name: Build Android
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: ./package-lock.json
+
+      - name: Install NPM Dependencies
+        run: npm ci
+      
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Build Android
+        run: npm run build -- --platform=android --entryUrl="https://www.example.com"
+
+  build_ios:
+    name: Build iOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: ./package-lock.json
+
+      - name: Install NPM Dependencies
+        run: npm ci
+      
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Build iOS
+        run: npm run build -- --platform=ios --entryUrl="https://www.example.com"
+
+  licensing:
+    name: License Headers
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: Check Files
+        run: |
+          REQUIRED_HEADER_SNIPPET="Copyright 2025 The Outline Authors"
+          MISSING_HEADER_FILES=$(find . \( -name "*.handlebars" -o -name "*.mjs" -o -name "*.html" -o -name "*.sh" \) -not -name "*.json.handlebars" -exec grep -L "${REQUIRED_HEADER_SNIPPET}" {} +)
+
+          if [[ -n "$MISSING_HEADER_FILES" ]]; then
+            echo "Error: The following files are missing the required license header:"
+            echo "$MISSING_HEADER_FILES"
+            exit 1
+          else
+            echo "All files have the required license header."
+          fi

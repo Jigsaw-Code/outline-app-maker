@@ -1,0 +1,37 @@
+name: Report Unexpected Behavior
+type: Bug
+description: File a bug report.
+body:
+  - type: checkboxes
+    id: existing-issues-check
+    attributes:
+      label: "Confirm: Verified Existing Issues"
+      description: "Before proceeding, confirm you've searched for similar issues."
+      options:
+        - label: "I have searched the [existing issues](https://github.com/Jigsaw-Code/outline-app-maker/issues) and found no similar bug reports."
+          required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: "Steps to Reproduce"
+      description: "List the precise steps needed to reproduce the bug, starting from a fresh state where possible."
+      placeholder: |
+        1. Go to '...' or run 'docker run ...'
+        2. Perform '....'
+        3. Observe '....'
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: "Expected Behavior"
+      description: "What did you expect to happen in this case?"
+
+  - type: input
+    id: environment
+    attributes:
+      label: "Environment"
+      description: "Please specify your relevant system details: stuff like operating system, Docker version, and the commit you're using."
+      placeholder: "e.g., OS: Sequoia 16.7, etc."
+    validations:
+      required: true

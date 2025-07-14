@@ -8,54 +8,9 @@ To verify that your system has the necessary dependencies to generate your web w
 ./doctor
 ```
 
-## Building the app project for **iOS**
-
-> [!WARNING]
-> You can only build iOS apps on MacOS.
-> Currently only works with build targets of iOS 17.2 (and below?)
-
-* You will need the url you want to load initially in your app.
-* You will need [go](https://golang.org/) to build the SDK library.
-* You will need [Node.js](https://nodejs.org/en/) for the project setup and web server.
-* You will need [XCode](https://developer.apple.com/xcode/). 
-* You will need [cocoapods](https://cocoapods.org/). 
-
-[Please refer to CapacitorJS's environment setup guide](https://capacitorjs.com/docs/getting-started/environment-setup#ios-requirements) and run `./doctor` to check to see if you have all the required dependencies.
-
-```sh
-npm run reset
-npm run build:project -- --platform=ios --entryUrl="https://www.example.com"
-npm run open:ios
-```
-
-Click the "play" button in XCode to start your iOS app!
-
-[See below for the list of available configuration options.](#available-configuration-options)
-
-### Adding icon and splash screen assets to your generated iOS project
-
-> [!NOTE]
-> TODO: automate this process
-
-You'll need to add the following images to the `assets` folder in your generated project:
-
-- A 1024x1024 png titled `icon.png` containing your app icon.
-- A 2732x2732 png titled `splash.png` containing your splash screen.
-- Another 2732x2732 png titled `splash-dark.png` containing your splash screen in dark mode.
-
-Then, run the following command to generate and place the assets in the appropriate places in your iOS project:
-
-```sh
-npx capacitor-assets generate --ios
-```
-
-### Publishing your app in the App Store
-
-[Follow these instructions on how to publish your app for beta testing and the App Store.](https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases)
-
 ## Building the app project for **Android**
 
-> [!WARNING]
+> [!NOTE]
 > If you want to build Android on Windows, please use [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)
 
 * You will need the url you want to load initially in your app.
@@ -70,8 +25,7 @@ npx capacitor-assets generate --ios
 
 ```sh
 npm run reset
-npm run build:project -- --platform=android --entryUrl="https://www.example.com"
-npm run open:android
+npm run build -- --platform=android --entryUrl="https://www.example.com"
 ```
 
 Wait for Gradle to load your project. Click the "play" button in Android Studio to start your Android app!
@@ -99,7 +53,52 @@ npx capacitor-assets generate --android
 
 [Follow these instructions to learn how to publish your app to the Google Play Store](https://developer.android.com/studio/publish)
 
-## Available Configuration Options
+
+## Building the app project for **iOS**
+
+> [!NOTE]
+> You can only build iOS apps on MacOS.
+> Currently only works with build targets of iOS 17.2 (and below?)
+
+* You will need the url you want to load initially in your app.
+* You will need [go](https://golang.org/) to build the SDK library.
+* You will need [Node.js](https://nodejs.org/en/) for the project setup and web server.
+* You will need [XCode](https://developer.apple.com/xcode/). 
+* You will need [cocoapods](https://cocoapods.org/). 
+
+[Please refer to CapacitorJS's environment setup guide](https://capacitorjs.com/docs/getting-started/environment-setup#ios-requirements) and run `./doctor` to check to see if you have all the required dependencies.
+
+```sh
+npm run reset
+npm run build -- --platform=ios --entryUrl="https://www.example.com"
+```
+
+Click the "play" button in XCode to start your iOS app!
+
+[See below for the list of available configuration options.](#available-configuration-options)
+
+### Adding icon and splash screen assets to your generated iOS project
+
+> [!NOTE]
+> TODO: automate this process
+
+You'll need to add the following images to the `assets` folder in your generated project:
+
+- A 1024x1024 png titled `icon.png` containing your app icon.
+- A 2732x2732 png titled `splash.png` containing your splash screen.
+- Another 2732x2732 png titled `splash-dark.png` containing your splash screen in dark mode.
+
+Then, run the following command to generate and place the assets in the appropriate places in your iOS project:
+
+```sh
+npx capacitor-assets generate --ios
+```
+
+### Publishing your app in the App Store
+
+[Follow these instructions on how to publish your app for beta testing and the App Store.](https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases)
+
+## Available Configuration Options for `npm run build`
 
 | Option              | Description                                                                     | Possible Values          |
 | ------------------- | ------------------------------------------------------------------------------- | ------------------------ |
@@ -124,7 +123,7 @@ npm run start:navigator -- --entryUrl="https://www.example.com" \
 
 Once the server has started, you can then run the build commands above in a separate terminal to view the demo in your app.
 
-## Available Configuration Options
+### Available Configuration Options for `npm run start:navigator`
 
 | Option              | Description                                                                     | Possible Values          |
 | ------------------- | ------------------------------------------------------------------------------- | ------------------------ |
@@ -142,9 +141,3 @@ When encountering an issue, the first thing you'll want to do is run the doctor 
 ```
 
 Additionally, you should run `npm run reset` to ensure your `output` and `node_modules` folders have not been tampered with!
-
-### Commonly occuring issues
-
-> [!NOTE]
-> TODO: compile a list of commonly occuring issues.
-
