@@ -8,8 +8,8 @@ permissions:
   contents: read
 
 jobs:
-  build_android:
-    name: Build Android
+  build_android_project:
+    name: Build Android Project
     runs-on: ubuntu-latest
 
     steps:
@@ -34,8 +34,8 @@ jobs:
       - name: Build Android
         run: npm run build -- --platform=android --entryUrl="https://www.example.com"
 
-  build_ios:
-    name: Build iOS
+  build_ios_project:
+    name: Build iOS Project
     runs-on: macos-latest
 
     steps:
