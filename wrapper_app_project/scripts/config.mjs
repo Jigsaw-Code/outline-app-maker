@@ -100,7 +100,7 @@ export function validateAndNormalizeConfig(inputConfig) {
   
   resolvedConfig.entryDomain = new URL(inputConfig.entryUrl).hostname;
   resolvedConfig.entryUrl = inputConfig.entryUrl;
-  resolvedConfig.output = inputConfig.output ?? `output/${new URL(inputConfig.entryUrl).hostname}`;
+  resolvedConfig.output = typeof inputConfig.output === "string" ? inputConfig.output : `output/${new URL(inputConfig.entryUrl).hostname}`;
   resolvedConfig.platform = inputConfig.platform;
 
     
