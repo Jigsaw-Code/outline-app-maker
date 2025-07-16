@@ -101,16 +101,17 @@ export function validateAndNormalizeConfig(inputConfig) {
   resolvedConfig.output = new URL(inputConfig.entryUrl).hostname;
   resolvedConfig.platform = inputConfig.platform;
 
-  if (!inputConfig.appId) {
+    
+  resolvedConfig.appId = typeof inputConfig.appId === "string"
+    ? inputConfig.appId
     // Infer an app ID from the entry domain by reversing it (e.g. `www.example.com` becomes `com.example.www`)
     // It must be lower case, and hyphens are not allowed.
-    resolvedConfig.appId = resolvedConfig.entryDomain
+    : resolvedConfig.entryDomain
       .replaceAll('-', '')
       .toLocaleLowerCase()
       .split('.')
       .reverse()
       .join('.')
-  }
 
   if (!inputConfig.appName) {
     // Infer an app name from the base entry domain part by title casing the root domain:
