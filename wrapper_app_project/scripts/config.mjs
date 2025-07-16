@@ -4,8 +4,32 @@ import path from 'node:path'
 import minimist from 'minimist'
 import YAML from 'yaml'
 
+/**
+ * Config provided by user.
+ * 
+ * @typedef {{
+ *   additionaldomain?: string | Array<string>;
+ *   appId?: string;
+ *   appName?: string;
+ *   entryUrl?: string;
+ *   output?: string;
+ *   platform?: string;
+ *   smartDialerConfig?: string;
+ * }} Config
+ */
 
 /**
+ * Config with required properties set.
+ * 
+ * @typedef {Config & {
+ *   entryUrl: string;
+ *   platform: string;
+ * }} ValidConfig
+ */
+
+/**
+ * Internal config (includes derived properties).
+ * 
  * @typedef {{
  *   additionalDomains: Array<string>;
  *   appId: string;
@@ -16,9 +40,12 @@ import YAML from 'yaml'
  *   output: string;
  *   platform: string;
  *   smartDialerConfig: string;
- * }} Config
+ * }} InternalConfig
  */
 
+/**
+ * @satisfies {Config}
+ */
 export const DEFAULT_CONFIG = {
   output: path.join(process.cwd(), 'output'),
   smartDialerConfig: JSON.stringify({
@@ -82,43 +109,56 @@ export function getCliConfig(args) {
 }
 
 /**
- * Validate and normalize a provided (unknown) config, throwing an error if
- * required parameters are missing.
- *
- * @param {Record<string, unknown>} inputConfig
- * @returns {Config}
+ * 
+ * @param {Config} args 
+ * 
+ * @returns {ValidConfig | { error: string }}
  */
-export function validateAndNormalizeConfig(inputConfig) {
-  const resolvedConfig = {};
-  
-  if (typeof inputConfig.entryUrl !== "string") {
-    throw new Error(`"entryUrl" parameter not provided in parameters or YAML configuration.`);
+export function validateConfig(args) {
+  if (typeof args.entryUrl !== "string" || !args.entryUrl.startsWith("http")) {
+    return {error: `"entryUrl" parameter must be provided and begin with "http".`};
   }
-  if (typeof inputConfig.platform !== "string") {
-    throw new Error(`"platform" parameter not provided in parameters or YAML configuration.`);
+  if (typeof args.platform !== "string" || !["android", "ios"].includes(args.platform)) {
+    return {error: `"platform" parameter must be provided and be set to "android" or "ios".`};
   }
+
+  return {
+    ...args,
+    entryUrl: args.entryUrl,
+    platform: args.platform,
+  };
+}
+
+/**
+ * Convert ValidConfig to InternalConfig.
+ *
+ * @param {ValidConfig} validConfig
+ * @returns {InternalConfig}
+ */
+export function makeInternalConfig(validConfig) {
+  const internalConfig = {};
   
-  resolvedConfig.entryDomain = new URL(inputConfig.entryUrl).hostname;
-  resolvedConfig.entryUrl = inputConfig.entryUrl;
-  resolvedConfig.output = typeof inputConfig.output === "string" ? inputConfig.output : `output/${new URL(inputConfig.entryUrl).hostname}`;
-  resolvedConfig.platform = inputConfig.platform;
+  internalConfig.entryDomain = new URL(validConfig.entryUrl).hostname;
+  internalConfig.entryUrl = validConfig.entryUrl;
+  internalConfig.output = typeof validConfig.output === "string" ? validConfig.output : `output/${new URL(validConfig.entryUrl).hostname}`;
+  internalConfig.platform = validConfig.platform;
 
     
-  resolvedConfig.appId = typeof inputConfig.appId === "string"
-    ? inputConfig.appId
+  internalConfig.appId = typeof validConfig.appId === "string"
+    ? validConfig.appId
     // Infer an app ID from the entry domain by reversing it (e.g. `www.example.com` becomes `com.example.www`)
     // It must be lower case, and hyphens are not allowed.
-    : resolvedConfig.entryDomain
+    : internalConfig.entryDomain
       .replaceAll('-', '')
       .toLocaleLowerCase()
       .split('.')
       .reverse()
       .join('.')
 
-  if (!inputConfig.appName) {
+  if (!validConfig.appName) {
     // Infer an app name from the base entry domain part by title casing the root domain:
     // (e.g. `www.my-example-app.com` becomes "My Example App")
-    resolvedConfig.appName = resolvedConfig.entryDomain
+    internalConfig.appName = internalConfig.entryDomain
       .split('.')
       .reverse()[1]
       .split(/[-_]+/)
@@ -126,14 +166,14 @@ export function validateAndNormalizeConfig(inputConfig) {
       .join(' ')
   }
   
-  resolvedConfig.additionalDomains = (
-    Array.isArray(inputConfig.additionaldomain) &&
-    inputConfig.additionaldomain.every((item) => typeof item === "string")
+  internalConfig.additionalDomains = (
+    Array.isArray(validConfig.additionaldomain) &&
+    validConfig.additionaldomain.every((item) => typeof item === "string")
   )
-    ? inputConfig.additionaldomain
+    ? validConfig.additionaldomain
     : []
-  resolvedConfig.domainList = [resolvedConfig.entryDomain, ...resolvedConfig.additionalDomains].join('\n')
-  resolvedConfig.smartDialerConfig = Buffer.from(JSON.stringify(inputConfig.smartDialerConfig)).toString('base64')
+  internalConfig.domainList = [internalConfig.entryDomain, ...internalConfig.additionalDomains].join('\n')
+  internalConfig.smartDialerConfig = Buffer.from(JSON.stringify(validConfig.smartDialerConfig)).toString('base64')
 
-  return resolvedConfig;
+  return internalConfig;
 }
