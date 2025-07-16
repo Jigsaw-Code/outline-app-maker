@@ -13,9 +13,6 @@
     "**/*.cjs",
     "**/*.mjs",
     "**/*.js",
-    "**/.*/**/*.cjs",
-    "**/.*/**/*.mjs",
-    "**/.*/**/*.js",
   ],
   "exclude": [
     "basic_navigator_example", // TODO: Remove this exclusion?
