@@ -13,13 +13,14 @@ To verify that your system has the necessary dependencies to generate your web w
 > [!NOTE]
 > If you want to build Android on Windows, please use [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)
 
-* You will need the url you want to load initially in your app.
-* You will need [Node.js](https://nodejs.org/en/) for the project setup and web server.
-* You will need [go](https://golang.org/) to build the SDK library.
-* You will need [JDK 17](https://stackoverflow.com/a/70649641) to build the app.
-* You will need [Android Studio](https://developer.android.com/studio/).
-  * Make sure to [install the NDK](https://developer.android.com/studio/projects/install-ndk#default-version).
-  * Make sure to [set the correct JDK](https://stackoverflow.com/a/30631386).
+* You will need:
+  * the url you want to load initially in your app.
+  * [Node.js](https://nodejs.org/en/) for the project setup and web server.
+  * [go](https://golang.org/) to build the SDK library.
+  * [JDK 17](https://stackoverflow.com/a/70649641) to build the app.
+  * [Android Studio](https://developer.android.com/studio/).
+    * Make sure to [install the NDK](https://developer.android.com/studio/projects/install-ndk#default-version).
+    * Make sure to [set the correct JDK](https://stackoverflow.com/a/30631386).
 
 [Please refer to CapacitorJS's environment setup guide](https://capacitorjs.com/docs/getting-started/environment-setup#android-requirements) and run `./doctor` to check to see if you have all the required dependencies.
 
@@ -60,11 +61,12 @@ npx capacitor-assets generate --android
 > You can only build iOS apps on MacOS.
 > Currently only works with build targets of iOS 17.2 (and below?)
 
-* You will need the url you want to load initially in your app.
-* You will need [go](https://golang.org/) to build the SDK library.
-* You will need [Node.js](https://nodejs.org/en/) for the project setup and web server.
-* You will need [XCode](https://developer.apple.com/xcode/). 
-* You will need [cocoapods](https://cocoapods.org/). 
+* You will need:
+  * the url you want to load initially in your app.
+  * [go](https://golang.org/) to build the SDK library.
+  * [Node.js](https://nodejs.org/en/) for the project setup and web server.
+  * [XCode](https://developer.apple.com/xcode/). 
+  * [cocoapods](https://cocoapods.org/). 
 
 [Please refer to CapacitorJS's environment setup guide](https://capacitorjs.com/docs/getting-started/environment-setup#ios-requirements) and run `./doctor` to check to see if you have all the required dependencies.
 
