@@ -1,5 +1,4 @@
 {
-  "js/ts.implicitProjectConfig.checkJs": true,
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.importModuleSpecifierEnding": "auto",
   "typescript.preferences.quoteStyle": "single",
