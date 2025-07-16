@@ -1,10 +1,12 @@
-// Copyright 2025 The Outline Authors
+//go:build tools
+
+// Copyright 2023 The Outline Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     https://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,21 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.getcapacitor.myapp;
+package tools
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class ExampleUnitTest {
-
-    @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
-    }
-}
+import (
+	_ "github.com/Jigsaw-Code/outline-sdk/x/mobileproxy"
+	_ "golang.org/x/mobile/cmd/gobind"
+	_ "golang.org/x/mobile/cmd/gomobile"
+)
