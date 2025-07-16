@@ -20,5 +20,6 @@
   "exclude": [
     "basic_navigator_example", // TODO: Remove this exclusion?
     "node_modules",
+    "output"
   ]
 }
