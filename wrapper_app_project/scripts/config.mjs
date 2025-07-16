@@ -39,7 +39,7 @@ import YAML from 'yaml'
  *   entryUrl: string;
  *   output: string;
  *   platform: string;
- *   smartDialerConfig: string;
+ *   smartDialerConfigBase64: string;
  * }} InternalConfig
  */
 
@@ -173,7 +173,7 @@ export function makeInternalConfig(validConfig) {
     ? validConfig.additionaldomain
     : []
   internalConfig.domainList = [internalConfig.entryDomain, ...internalConfig.additionalDomains].join('\n')
-  internalConfig.smartDialerConfig = Buffer.from(JSON.stringify(validConfig.smartDialerConfig)).toString('base64')
+  internalConfig.smartDialerConfigBase64 = Buffer.from(JSON.stringify(validConfig.smartDialerConfig)).toString('base64')
 
   return internalConfig;
 }
