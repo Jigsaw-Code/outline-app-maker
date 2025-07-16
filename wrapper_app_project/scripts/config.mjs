@@ -12,6 +12,7 @@ import YAML from 'yaml'
  *   appName: string;
  *   domainList: string;
  *   entryDomain: string;
+ *   entryUrl: string;
  *   output: string;
  *   platform: string;
  *   smartDialerConfig: string;
@@ -98,6 +99,7 @@ export function validateAndNormalizeConfig(inputConfig) {
   }
   
   resolvedConfig.entryDomain = new URL(inputConfig.entryUrl).hostname;
+  resolvedConfig.entryUrl = inputConfig.entryUrl;
   resolvedConfig.output = new URL(inputConfig.entryUrl).hostname;
   resolvedConfig.platform = inputConfig.platform;
 
