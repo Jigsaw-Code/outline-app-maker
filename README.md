@@ -24,7 +24,7 @@ To verify that your system has the necessary dependencies to generate your web w
 
 ```sh
 npm run reset
-npm run build:project -- --platform=ios --entryUrl="https://www.example.com"
+npm run build -- --platform=ios --entryUrl="https://www.example.com"
 npm run open:ios
 ```
 
@@ -70,7 +70,7 @@ npx capacitor-assets generate --ios
 
 ```sh
 npm run reset
-npm run build:project -- --platform=android --entryUrl="https://www.example.com"
+npm run build -- --platform=android --entryUrl="https://www.example.com"
 npm run open:android
 ```
 
