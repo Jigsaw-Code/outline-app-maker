@@ -31,7 +31,7 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
-      - name: Build Android
+      - name: Generate Android Project
         run: npm run build -- --platform=android --entryUrl="https://www.example.com"
 
   build_ios_project:
@@ -57,7 +57,7 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
-      - name: Build iOS
+      - name: Generate iOS Project
         run: npm run build -- --platform=ios --entryUrl="https://www.example.com"
 
   licensing:
