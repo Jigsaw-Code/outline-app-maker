@@ -62,7 +62,7 @@ npx capacitor-assets generate --android
 > Currently only works with build targets of iOS 17.2 (and below?)
 
 * You will need:
-  * the url you want to load initially in your app.
+  * The url you want to load initially in your app.
   * [go](https://golang.org/) to build the SDK library.
   * [Node.js](https://nodejs.org/en/) for the project setup and web server.
   * [XCode](https://developer.apple.com/xcode/). 
