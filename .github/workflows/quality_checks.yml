@@ -71,7 +71,7 @@ jobs:
       - name: Check Files
         run: |
           REQUIRED_HEADER_SNIPPET="Copyright 20[0-9][0-9] The Outline Authors"
-          MISSING_HEADER_FILES=$(find . \( -name "*.handlebars" -o -name "*.mjs" -o -name "*.html" -o -name "*.sh" \) -not -name "*.json.handlebars" -exec grep -L "${REQUIRED_HEADER_SNIPPET}" {} +)
+          MISSING_HEADER_FILES=$(find . \( -name "*.handlebars" -o -name "*.mjs" -o -name "*.html" -o -name "*.sh" \) -not -name "*.json.handlebars" -not -name "*.md.handlebars" -exec grep -L "${REQUIRED_HEADER_SNIPPET}" {} +)
 
           if [[ -n "$MISSING_HEADER_FILES" ]]; then
             echo "Error: The following files are missing the required license header:"
