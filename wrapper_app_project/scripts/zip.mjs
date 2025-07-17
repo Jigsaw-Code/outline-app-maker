@@ -16,13 +16,13 @@ export function compress(sourceDirectoryPath, destinationZipFilePath) {
   return new Promise((resolve, reject) => {
     job.directory(sourceDirectoryPath, false)
     job.pipe(destinationStream)
-  
+
     // @ts-expect-error (this appears to be harmless)
     destinationStream.on('close', resolve)
-  
+
     job.on('error', reject)
     destinationStream.on('error', reject)
-  
+
     job.finalize()
   });
 }

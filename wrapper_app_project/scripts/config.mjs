@@ -6,7 +6,7 @@ import YAML from 'yaml'
 
 /**
  * Config provided by user.
- * 
+ *
  * @typedef {{
  *   additionaldomain?: string | Array<string>;
  *   appId?: string;
@@ -20,7 +20,7 @@ import YAML from 'yaml'
 
 /**
  * Config with required properties set.
- * 
+ *
  * @typedef {Config & {
  *   entryUrl: string;
  *   platform: string;
@@ -29,7 +29,7 @@ import YAML from 'yaml'
 
 /**
  * Internal config (includes derived properties).
- * 
+ *
  * @typedef {{
  *   additionalDomains: Array<string>;
  *   appId: string;
@@ -59,7 +59,7 @@ export const DEFAULT_CONFIG = {
       'split:1',
       'split:2',
       'tlsfrag:1'
-    ],   
+    ],
   })
 }
 
@@ -76,7 +76,7 @@ export const DEFAULT_CONFIG = {
 export async function getYAMLFileConfig(filepath) {
   try {
     const data = await fs.readFile(filepath, 'utf8')
-    
+
     if (data) {
       const parsedData = YAML.parse(data);
 
@@ -109,9 +109,9 @@ export function getCliConfig(args) {
 }
 
 /**
- * 
- * @param {Config} args 
- * 
+ *
+ * @param {Config} args
+ *
  * @returns {ValidConfig | { error: string }}
  */
 export function validateConfig(args) {
@@ -137,13 +137,13 @@ export function validateConfig(args) {
  */
 export function makeInternalConfig(validConfig) {
   const internalConfig = {};
-  
+
   internalConfig.entryDomain = new URL(validConfig.entryUrl).hostname;
   internalConfig.entryUrl = validConfig.entryUrl;
   internalConfig.output = typeof validConfig.output === "string" ? validConfig.output : `output/${new URL(validConfig.entryUrl).hostname}`;
   internalConfig.platform = validConfig.platform;
 
-    
+
   internalConfig.appId = typeof validConfig.appId === "string"
     ? validConfig.appId
     // Infer an app ID from the entry domain by reversing it (e.g. `www.example.com` becomes `com.example.www`)
@@ -165,7 +165,7 @@ export function makeInternalConfig(validConfig) {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ')
   }
-  
+
   internalConfig.additionalDomains = (
     Array.isArray(validConfig.additionaldomain) &&
     validConfig.additionaldomain.every((item) => typeof item === "string")
