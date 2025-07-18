@@ -116,7 +116,21 @@ export function getCliBuildConfig(args) {
  * @returns {rawBuildConfig is ValidRawBuildConfig}
  */
 export function isValidRawBuildConfig(rawBuildConfig) {
-  if (typeof rawBuildConfig.entryUrl !== "string" || !rawBuildConfig.entryUrl.startsWith("http")) {
+  const entryUrlIsValidUrl = (() => {
+    if (typeof rawBuildConfig.entryUrl !== "string") {
+      return false;
+    };
+
+    try {
+      // Throws if entryUrl is invalid
+      new URL(rawBuildConfig.entryUrl);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  })();
+
+  if (!entryUrlIsValidUrl) {
     console.error(`"entryUrl" parameter must be provided and begin with "http".`);
     return false;
   }
@@ -147,12 +161,15 @@ export function resolveBuildConfig(validRawBuildConfig) {
     ? validRawBuildConfig.appId
     // Infer an app ID from the entry domain by reversing it (e.g. `www.example.com` becomes `com.example.www`)
     // It must be lower case, and hyphens are not allowed.
-    : resolvedBuildConfig.entryDomain
-      .replaceAll('-', '')
-      .toLocaleLowerCase()
-      .split('.')
-      .reverse()
-      .join('.')
+    : typeof resolvedBuildConfig.entryDomain === "string" && resolvedBuildConfig.entryDomain.includes('.')
+      ? resolvedBuildConfig.entryDomain
+        .replaceAll('-', '')
+        .toLocaleLowerCase()
+        .split('.')
+        .reverse()
+        .join('.')
+      // This default value should never be used unless entryDomain is somehow purely a TLD
+      : "app"
 
   if (!validRawBuildConfig.appName) {
     // Infer an app name from the base entry domain part by title casing the root domain:
