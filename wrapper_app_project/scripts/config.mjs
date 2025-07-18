@@ -5,7 +5,7 @@ import minimist from 'minimist'
 import YAML from 'yaml'
 
 /**
- * Config provided by user.
+ * Raw build config (provided by user).
  *
  * @typedef {{
  *   additionaldomain?: string | Array<string>;
@@ -19,7 +19,7 @@ import YAML from 'yaml'
  */
 
 /**
- * Config with required properties set.
+ * Raw build config with required properties set.
  *
  * @typedef {RawBuildConfig & {
  *   entryUrl: string;
@@ -28,7 +28,7 @@ import YAML from 'yaml'
  */
 
 /**
- * Internal config (includes derived properties).
+ * Resolved build config (includes derived properties).
  *
  * @typedef {{
  *   additionalDomains: Array<string>;
