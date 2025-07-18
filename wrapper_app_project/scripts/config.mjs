@@ -109,24 +109,23 @@ export function getCliBuildConfig(args) {
 }
 
 /**
+ * Validate that provided rawBuildConfig is valid. Logs failure reason to console.
  *
- * @param {RawBuildConfig} args
+ * @param {RawBuildConfig} rawBuildConfig
  *
- * @returns {ValidRawBuildConfig | { error: string }}
+ * @returns {rawBuildConfig is ValidRawBuildConfig}
  */
-export function validateRawBuildConfig(args) {
-  if (typeof args.entryUrl !== "string" || !args.entryUrl.startsWith("http")) {
-    return {error: `"entryUrl" parameter must be provided and begin with "http".`};
+export function isValidRawBuildConfig(rawBuildConfig) {
+  if (typeof rawBuildConfig.entryUrl !== "string" || !rawBuildConfig.entryUrl.startsWith("http")) {
+    console.error(`"entryUrl" parameter must be provided and begin with "http".`);
+    return false;
   }
-  if (typeof args.platform !== "string" || !["android", "ios"].includes(args.platform)) {
-    return {error: `"platform" parameter must be provided and be set to "android" or "ios".`};
+  if (typeof rawBuildConfig.platform !== "string" || !["android", "ios"].includes(rawBuildConfig.platform)) {
+    console.error(`"platform" parameter must be provided and be set to "android" or "ios".`);
+    return false;
   }
 
-  return {
-    ...args,
-    entryUrl: args.entryUrl,
-    platform: args.platform,
-  };
+  return true;
 }
 
 /**
