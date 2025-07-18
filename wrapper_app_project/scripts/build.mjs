@@ -21,7 +21,7 @@ import chalk from 'chalk'
 import { glob } from 'glob'
 import handlebars from 'handlebars'
 
-import { getCliConfig, getYAMLFileConfig, DEFAULT_CONFIG, makeInternalConfig, validateConfig } from './config.mjs'
+import { getCliBuildConfig, getYAMLBuildConfig, DEFAULT_CONFIG, resolveBuildConfig, validateRawBuildConfig } from './config.mjs'
 import { compress } from './zip.mjs'
 
 const TEMPLATE_DIR = path.join(process.cwd(), 'wrapper_app_project/template');
@@ -32,17 +32,17 @@ if (import.meta.url !== pathToFileURL(`${process.argv[1]}`).href) {
   throw new Error('Build script must be run from the cli')
 }
 
-const validConfig = validateConfig({
+const validConfig = validateRawBuildConfig({
   ...DEFAULT_CONFIG,
-  ...(await getYAMLFileConfig('config.yaml')),
-  ...getCliConfig(process.argv)
+  ...(await getYAMLBuildConfig('config.yaml')),
+  ...getCliBuildConfig(process.argv)
 });
 
 if ("error" in validConfig) {
   throw new Error(validConfig.error)
 }
 
-const internalConfig = makeInternalConfig(validConfig)
+const internalConfig = resolveBuildConfig(validConfig)
 
 const APP_TARGET_DIR = path.resolve(internalConfig.output, internalConfig.appName)
 const APP_TARGET_ZIP = path.resolve(internalConfig.output, `${internalConfig.appName}.zip`)

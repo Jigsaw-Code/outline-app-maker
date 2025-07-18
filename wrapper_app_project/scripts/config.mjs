@@ -15,16 +15,16 @@ import YAML from 'yaml'
  *   output?: string;
  *   platform?: string;
  *   smartDialerConfig?: string;
- * }} Config
+ * }} RawBuildConfig
  */
 
 /**
  * Config with required properties set.
  *
- * @typedef {Config & {
+ * @typedef {RawBuildConfig & {
  *   entryUrl: string;
  *   platform: string;
- * }} ValidConfig
+ * }} ValidRawBuildConfig
  */
 
 /**
@@ -40,11 +40,11 @@ import YAML from 'yaml'
  *   output: string;
  *   platform: string;
  *   smartDialerConfigBase64: string;
- * }} InternalConfig
+ * }} ResolvedBuildConfig
  */
 
 /**
- * @satisfies {Config}
+ * @satisfies {RawBuildConfig}
  */
 export const DEFAULT_CONFIG = {
   output: path.join(process.cwd(), 'output'),
@@ -73,7 +73,7 @@ export const DEFAULT_CONFIG = {
  * @param {string} filepath
  * @returns {Promise<{}>}
  */
-export async function getYAMLFileConfig(filepath) {
+export async function getYAMLBuildConfig(filepath) {
   try {
     const data = await fs.readFile(filepath, 'utf8')
 
@@ -100,7 +100,7 @@ export async function getYAMLFileConfig(filepath) {
 /**
  * @param {NodeJS.Process["argv"]} args
  */
-export function getCliConfig(args) {
+export function getCliBuildConfig(args) {
   const dict = minimist(args)
   return {
     ...dict,
@@ -110,11 +110,11 @@ export function getCliConfig(args) {
 
 /**
  *
- * @param {Config} args
+ * @param {RawBuildConfig} args
  *
- * @returns {ValidConfig | { error: string }}
+ * @returns {ValidRawBuildConfig | { error: string }}
  */
-export function validateConfig(args) {
+export function validateRawBuildConfig(args) {
   if (typeof args.entryUrl !== "string" || !args.entryUrl.startsWith("http")) {
     return {error: `"entryUrl" parameter must be provided and begin with "http".`};
   }
@@ -130,35 +130,35 @@ export function validateConfig(args) {
 }
 
 /**
- * Convert ValidConfig to InternalConfig.
+ * Convert ValidRawBuildConfig to ResolvedBuildConfig.
  *
- * @param {ValidConfig} validConfig
- * @returns {InternalConfig}
+ * @param {ValidRawBuildConfig} validRawBuildConfig
+ * @returns {ResolvedBuildConfig}
  */
-export function makeInternalConfig(validConfig) {
-  const internalConfig = {};
+export function resolveBuildConfig(validRawBuildConfig) {
+  const resolvedBuildConfig = {};
 
-  internalConfig.entryDomain = new URL(validConfig.entryUrl).hostname;
-  internalConfig.entryUrl = validConfig.entryUrl;
-  internalConfig.output = typeof validConfig.output === "string" ? validConfig.output : `output/${new URL(validConfig.entryUrl).hostname}`;
-  internalConfig.platform = validConfig.platform;
+  resolvedBuildConfig.entryDomain = new URL(validRawBuildConfig.entryUrl).hostname;
+  resolvedBuildConfig.entryUrl = validRawBuildConfig.entryUrl;
+  resolvedBuildConfig.output = typeof validRawBuildConfig.output === "string" ? validRawBuildConfig.output : `output/${new URL(validRawBuildConfig.entryUrl).hostname}`;
+  resolvedBuildConfig.platform = validRawBuildConfig.platform;
 
 
-  internalConfig.appId = typeof validConfig.appId === "string"
-    ? validConfig.appId
+  resolvedBuildConfig.appId = typeof validRawBuildConfig.appId === "string"
+    ? validRawBuildConfig.appId
     // Infer an app ID from the entry domain by reversing it (e.g. `www.example.com` becomes `com.example.www`)
     // It must be lower case, and hyphens are not allowed.
-    : internalConfig.entryDomain
+    : resolvedBuildConfig.entryDomain
       .replaceAll('-', '')
       .toLocaleLowerCase()
       .split('.')
       .reverse()
       .join('.')
 
-  if (!validConfig.appName) {
+  if (!validRawBuildConfig.appName) {
     // Infer an app name from the base entry domain part by title casing the root domain:
     // (e.g. `www.my-example-app.com` becomes "My Example App")
-    internalConfig.appName = internalConfig.entryDomain
+    resolvedBuildConfig.appName = resolvedBuildConfig.entryDomain
       .split('.')
       .reverse()[1]
       .split(/[-_]+/)
@@ -166,14 +166,14 @@ export function makeInternalConfig(validConfig) {
       .join(' ')
   }
 
-  internalConfig.additionalDomains = (
-    Array.isArray(validConfig.additionaldomain) &&
-    validConfig.additionaldomain.every((item) => typeof item === "string")
+  resolvedBuildConfig.additionalDomains = (
+    Array.isArray(validRawBuildConfig.additionaldomain) &&
+    validRawBuildConfig.additionaldomain.every((item) => typeof item === "string")
   )
-    ? validConfig.additionaldomain
+    ? validRawBuildConfig.additionaldomain
     : []
-  internalConfig.domainList = [internalConfig.entryDomain, ...internalConfig.additionalDomains].join('\n')
-  internalConfig.smartDialerConfigBase64 = Buffer.from(JSON.stringify(validConfig.smartDialerConfig)).toString('base64')
+  resolvedBuildConfig.domainList = [resolvedBuildConfig.entryDomain, ...resolvedBuildConfig.additionalDomains].join('\n')
+  resolvedBuildConfig.smartDialerConfigBase64 = Buffer.from(JSON.stringify(validRawBuildConfig.smartDialerConfig)).toString('base64')
 
-  return internalConfig;
+  return resolvedBuildConfig;
 }
