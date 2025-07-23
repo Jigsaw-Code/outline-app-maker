@@ -8,6 +8,10 @@ To verify that your system has the necessary dependencies to generate your web w
 ./doctor
 ```
 
+### VS Code
+
+If you’re developing in VS Code you may want to copy [`.vscode.suggestion/settings.json`](.vscode.suggestion/settings.json) into `.vscode/settings.json` to apply some development settings.
+
 ## Building the app project for **iOS**
 
 > [!WARNING]

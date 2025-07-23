@@ -1,0 +1,15 @@
+{
+  "extends": "./node_modules/gts/",
+  // This is needed until support for mjs files is added to gts
+  // (https://github.com/google/gts/issues/655)
+  "overrides": [
+    {
+      "files": ["**/*.mjs"],
+      "parserOptions": {
+        // 2022 (13) supports import.meta and top-level await
+        "ecmaVersion": 2022,
+        "sourceType": "module"
+      }
+    }
+  ]
+}
