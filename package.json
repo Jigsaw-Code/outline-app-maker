@@ -12,9 +12,11 @@
   "devDependencies": {
     "@types/archiver": "^6.0.3",
     "@types/minimist": "^1.2.5",
+    "@types/node": "^22.7.5",
     "glob": "^11.0.1",
+    "gts": "^6.0.2",
     "handlebars": "^4.7.8",
-    "typescript": "^5.8.3",
+    "typescript": "^5.6.3",
     "vite": "^6.3.5"
   },
   "engines": {
@@ -25,10 +27,14 @@
     "build:mobileproxy": "bash ./scripts/build_mobileproxy.sh",
     "build": "node ./wrapper_app_project/scripts/build.mjs",
     "clean": "npx rimraf node_modules/ output/",
+    "compile": "tsc --noEmit",
     "doctor": "./doctor",
+    "eslint:check": "eslint . --ext='js,mjs,ts,tsx'",
+    "eslint:fix": "eslint . --ext='js,mjs,ts,tsx' --fix",
+    "lint": "gts lint && npm run eslint:check",
+    "fix": "gts fix && npm run eslint:fix",
     "reset": "npm run clean && npm ci",
-    "start:navigator": "node ./basic_navigator_example/scripts/start.mjs",
-    "typescript:check": "tsc --noEmit"
+    "start:navigator": "node ./basic_navigator_example/scripts/start.mjs"
   },
   "private": true
 }

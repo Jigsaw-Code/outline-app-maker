@@ -1,19 +1,16 @@
 {
+  "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
-    "noEmit": true,
+    // These are needed for import.meta and top-level await (similar to
+    // "ecmaVersion": 2022 in .eslintrc.json)
     "module": "node16",
-    "strict": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "moduleResolution": "node16",
+    // We only use TSC for checking .mjs files
+    "noEmit": true
   },
-  "include": [
-    "**/*.cjs",
-    "**/*.mjs",
-    "**/*.js",
-  ],
+  "include": ["**/*.cjs", "**/*.mjs", "**/*.js"],
   "exclude": [
     "basic_navigator_example", // TODO: Remove this exclusion?
     "node_modules",

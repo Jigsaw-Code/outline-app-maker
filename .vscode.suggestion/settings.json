@@ -1,10 +1,22 @@
 {
-  "files.insertFinalNewline": true,
-  "files.trimFinalNewlines": true,
-  "files.trimTrailingWhitespace": true,
+  "files.associations": {
+    "*.gradle.handlebars": "gradle",
+    "*.json.handlebars": "handlebars",
+    "*.kt.handlebars": "kotlin",
+    "*.md.handlebars": "markdown",
+    "*.swift.handlebars": "swift",
+    "*.xml.handlebars": "xml"
+  },
+  // Disabled because Kotlin project not configured in this repo, causing errors
+  // in all .kt.handlebars files
+  "kotlin.languageServer.enabled": false,
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.importModuleSpecifierEnding": "auto",
   "typescript.preferences.quoteStyle": "single",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "[javascript][json][jsonc][typescript][yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  }
 }
