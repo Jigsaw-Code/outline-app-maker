@@ -53,7 +53,7 @@ import YAML from 'yaml';
  * @param {string} filepath
  * @returns {Promise<{}>}
  */
-export async function getYAMLBuildConfig(filepath) {
+export async function yamlBuildConfigToObject(filepath) {
   try {
     const data = await fs.readFile(filepath, 'utf8');
 

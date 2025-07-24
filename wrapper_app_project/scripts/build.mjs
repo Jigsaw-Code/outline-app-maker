@@ -23,7 +23,7 @@ import handlebars from 'handlebars';
 
 import {
   getCliBuildConfig,
-  getYAMLBuildConfig,
+  yamlBuildConfigToObject,
   resolveBuildConfig,
   isValidRawBuildConfig,
 } from './config.mjs';
@@ -48,7 +48,7 @@ const rawBuildConfig = {
     ],
     tls: ['', 'split:1', 'split:2', 'tlsfrag:1'],
   }),
-  ...(await getYAMLBuildConfig('config.yaml')),
+  ...(await yamlBuildConfigToObject('config.yaml')),
   ...getCliBuildConfig(process.argv),
 };
 
