@@ -167,21 +167,24 @@ export function resolveBuildConfig(validRawBuildConfig) {
       : `output/${new URL(validRawBuildConfig.entryUrl).hostname}`;
   resolvedBuildConfig.platform = validRawBuildConfig.platform;
 
-  resolvedBuildConfig.appId =
-    typeof validRawBuildConfig.appId === 'string'
-      ? validRawBuildConfig.appId
-      : // Infer an app ID from the entry domain by reversing it (e.g. `www.example.com` becomes `com.example.www`)
-        // It must be lower case, and hyphens are not allowed.
-        typeof resolvedBuildConfig.entryDomain === 'string' &&
-          resolvedBuildConfig.entryDomain.includes('.')
-        ? resolvedBuildConfig.entryDomain
-            .replaceAll('-', '')
-            .toLocaleLowerCase()
-            .split('.')
-            .reverse()
-            .join('.')
-        : // This default value should never be used unless entryDomain is somehow purely a TLD
-          'app';
+  if (
+    typeof validRawBuildConfig.appId === 'string' &&
+    validRawBuildConfig.appId.length >= 1
+  ) {
+    resolvedBuildConfig.appId = validRawBuildConfig.appId;
+  } else if (
+    typeof resolvedBuildConfig.entryDomain === 'string' &&
+    resolvedBuildConfig.entryDomain.includes('.')
+  ) {
+    resolvedBuildConfig.appId = resolvedBuildConfig.entryDomain
+      .replaceAll('-', '')
+      .toLocaleLowerCase()
+      .split('.')
+      .reverse()
+      .join('.');
+  } else {
+    resolvedBuildConfig.appId = 'app';
+  }
 
   if (!validRawBuildConfig.appName) {
     // Infer an app name from the base entry domain part by title casing the root domain:
