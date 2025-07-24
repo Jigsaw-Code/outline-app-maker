@@ -24,7 +24,6 @@ import handlebars from 'handlebars';
 import {
   getCliBuildConfig,
   getYAMLBuildConfig,
-  DEFAULT_CONFIG,
   resolveBuildConfig,
   isValidRawBuildConfig,
 } from './config.mjs';
@@ -39,7 +38,16 @@ if (import.meta.url !== pathToFileURL(`${process.argv[1]}`).href) {
 
 /** @type {import('./config.mjs').RawBuildConfig} */
 const rawBuildConfig = {
-  ...DEFAULT_CONFIG,
+  // These values can be overridden by the YAML or CLI config
+  output: path.join(process.cwd(), 'output'),
+  smartDialerConfig: JSON.stringify({
+    dns: [
+      {
+        https: {name: '9.9.9.9'},
+      },
+    ],
+    tls: ['', 'split:1', 'split:2', 'tlsfrag:1'],
+  }),
   ...(await getYAMLBuildConfig('config.yaml')),
   ...getCliBuildConfig(process.argv),
 };

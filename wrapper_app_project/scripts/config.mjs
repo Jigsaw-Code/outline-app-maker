@@ -44,21 +44,6 @@ import YAML from 'yaml';
  */
 
 /**
- * @satisfies {RawBuildConfig}
- */
-export const DEFAULT_CONFIG = {
-  output: path.join(process.cwd(), 'output'),
-  smartDialerConfig: JSON.stringify({
-    dns: [
-      {
-        https: {name: '9.9.9.9'},
-      },
-    ],
-    tls: ['', 'split:1', 'split:2', 'tlsfrag:1'],
-  }),
-};
-
-/**
  * Parse a provided YAML file, returning an object.
  *
  * If the YAML file doesn't parse as an object (e.g. if it contains a primitive
