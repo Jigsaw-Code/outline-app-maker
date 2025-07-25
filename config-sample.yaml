@@ -1,0 +1,13 @@
+additionalDomains:
+  - medium.com
+appName: 'Jigsaw'
+entryUrl: 'https://jigsaw.google.com'
+smartDialerConfig:
+  dns:
+    - https:
+        name: 9.9.9.9
+  tls:
+    - ''
+    - split:1
+    - split:2
+    - tlsfrag:1

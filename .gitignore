@@ -1,5 +1,6 @@
 .DS_Store
 .vscode/
+config.yaml
 output/
 node_modules/
 tsconfig.tsbuildinfo

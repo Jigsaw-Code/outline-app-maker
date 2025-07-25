@@ -10,7 +10,7 @@
     // We only use TSC for checking .mjs files
     "noEmit": true
   },
-  "include": ["**/*.cjs", "**/*.mjs", "**/*.js"],
+  "include": ["**/*.cjs", "**/*.mjs", "**/*.js", "**/*.ts"],
   "exclude": [
     "basic_navigator_example", // TODO: Remove this exclusion?
     "node_modules",

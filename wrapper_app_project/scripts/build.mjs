@@ -21,13 +21,8 @@ import chalk from 'chalk';
 import {glob} from 'glob';
 import handlebars from 'handlebars';
 
-import {
-  getCliBuildConfig,
-  yamlBuildConfigToObject,
-  resolveBuildConfig,
-  isValidRawBuildConfig,
-} from './config.mjs';
 import {compress} from './zip.mjs';
+import createConfig from './createConfig.mjs';
 
 const TEMPLATE_DIR = path.join(process.cwd(), 'wrapper_app_project/template');
 
@@ -36,38 +31,14 @@ if (import.meta.url !== pathToFileURL(`${process.argv[1]}`).href) {
   throw new Error('Build script must be run from the cli');
 }
 
-/** @type {import('./config.mjs').RawBuildConfig} */
-const rawBuildConfig = {
-  // These values can be overridden by the YAML or CLI config
-  output: path.join(process.cwd(), 'output'),
-  smartDialerConfig: JSON.stringify({
-    dns: [
-      {
-        https: {name: '9.9.9.9'},
-      },
-    ],
-    tls: ['', 'split:1', 'split:2', 'tlsfrag:1'],
-  }),
-  ...(await yamlBuildConfigToObject('config.yaml')),
-  ...getCliBuildConfig(process.argv),
-};
+const config = await createConfig();
 
-if (!isValidRawBuildConfig(rawBuildConfig)) {
-  throw new Error('Provided configuration is invalid');
-}
+console.info(chalk.bgGreen('Loaded config:'), config);
 
-const internalConfig = resolveBuildConfig(rawBuildConfig);
+const APP_TARGET_DIR = path.resolve(config.output, config.appName);
+const APP_TARGET_ZIP = path.resolve(config.output, `${config.appName}.zip`);
 
-const APP_TARGET_DIR = path.resolve(
-  internalConfig.output,
-  internalConfig.appName,
-);
-const APP_TARGET_ZIP = path.resolve(
-  internalConfig.output,
-  `${internalConfig.appName}.zip`,
-);
-
-const SDK_TARGET_BIN = path.resolve(internalConfig.output, 'mobileproxy');
+const SDK_TARGET_BIN = path.resolve(config.output, 'mobileproxy');
 const SDK_TARGET_DIR = path.resolve(APP_TARGET_DIR, 'mobileproxy');
 
 try {
@@ -75,14 +46,14 @@ try {
 } catch (err) {
   console.log(
     chalk.bgGreen(
-      `Building the Outline SDK mobileproxy library for ${internalConfig.platform}...`,
+      `Building the Outline SDK mobileproxy library for ${config.platform}...`,
     ),
   );
   await promisify(execFile)('npm', [
     'run',
     'build:mobileproxy',
-    internalConfig.platform,
-    internalConfig.output,
+    config.platform,
+    config.output,
   ]);
 }
 
@@ -109,7 +80,7 @@ for (const sourceFilepath of sourceFilepaths) {
     );
     await fs.writeFile(
       destinationFilepath.replace(/\.handlebars$/, ''),
-      template(internalConfig),
+      template(config),
       'utf8',
     );
   } else {
@@ -125,7 +96,7 @@ console.log(chalk.green('Installing external dependencies for the project...'));
 await promisify(exec)(`
   cd ${APP_TARGET_DIR.replaceAll(/\s+/g, '\\ ')}
   npm install --no-warnings
-  npx cap sync ${internalConfig.platform}
+  npx cap sync ${config.platform}
 `);
 
 console.log(chalk.green(`Zipping project to ${chalk.blue(APP_TARGET_ZIP)}...`));
@@ -133,11 +104,11 @@ await compress(APP_TARGET_DIR, APP_TARGET_ZIP);
 
 console.log(chalk.bgGreen('Project ready!'));
 
-if ('android' === internalConfig.platform) {
+if ('android' === config.platform) {
   console.log(chalk.white('To open your project in Android Studio:'));
   console.log(chalk.gray(`  cd ${APP_TARGET_DIR.replaceAll(/\s+/g, '\\ ')}`));
   console.log(chalk.gray('  npm run open:android'));
-} else if ('ios' === internalConfig.platform) {
+} else if ('ios' === config.platform) {
   console.log(chalk.white('To open your project in Xcode:)'));
   console.log(chalk.gray(`  cd ${APP_TARGET_DIR.replaceAll(/\s+/g, '\\ ')}`));
   console.log(chalk.gray('  npm run open:ios'));

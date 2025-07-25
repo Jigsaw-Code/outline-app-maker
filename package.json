@@ -2,11 +2,13 @@
   "name": "outline-app-maker",
   "dependencies": {
     "@ngrok/ngrok": "1.4.1",
+    "ajv": "^8.17.1",
     "archiver": "^7.0.1",
     "chalk": "^5.4.1",
     "http-proxy": "^1.18.1",
     "minimist": "^1.2.8",
     "serve-handler": "6.1.6",
+    "ts-json-schema-generator": "^2.4.0",
     "yaml": "^2.7.1"
   },
   "devDependencies": {
