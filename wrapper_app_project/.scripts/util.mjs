@@ -52,7 +52,7 @@ export function resolveConfiguration(config) {
       .join(' ')
   }
   
-  resolved.additionalDomains = config.additionaldomain ?? []
+  resolved.additionalDomains = config.additionalDomains ?? []
   resolved.domainList = [resolved.entryDomain, ...resolved.additionalDomains].join('\n')
   resolved.smartDialerConfig = Buffer.from(JSON.stringify(config.smartDialerConfig)).toString('base64')
 
