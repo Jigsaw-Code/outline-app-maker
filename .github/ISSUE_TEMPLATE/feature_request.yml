@@ -1,0 +1,21 @@
+name: Feature Request
+type: Feature
+description: Request a new feature!
+body:
+  - type: checkboxes
+    id: existing-features-check
+    attributes:
+      label: "Confirm: Verified Existing Feature Requests"
+      description: "Before proceeding, confirm you've searched for similar feature requests. If a similar request exists, please add your thoughts there instead of opening a new one."
+      options:
+        - label: "I have searched the [existing issues](https://github.com/Jigsaw-Code/outline-app-maker/issues) and found no similar feature requests."
+          required: true
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: "Feature Description"
+      description: "Please describe the feature in detail. What use case does it address, and why is the current system insufficient?"
+      placeholder: "e.g. I would like to be able to..."
+    validations:
+      required: true
