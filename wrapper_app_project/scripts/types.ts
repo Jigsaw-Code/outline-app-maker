@@ -1,16 +1,3 @@
-export type SmartDialerConfig = {
-  dns?: Array<
-    | {system: {}}
-    | {https: {name: string; address?: string}}
-    | {tls: {name: string; address?: string}}
-    | {tls: {name: string; address: string}}
-    | {udp: {address: string}}
-    | {tcp: {address: string}}
-  >;
-  tls?: Array<string>;
-  fallback?: Array<string | {psiphon: {}}>;
-};
-
 export type Platform = 'android' | 'ios';
 
 export type Config = {
@@ -22,7 +9,7 @@ export type Config = {
   entryUrl: string;
   output: string;
   platform: Platform;
-  smartDialerConfig: SmartDialerConfig;
+  smartDialerConfig: object;
   smartDialerConfigBase64: string;
 };
 
