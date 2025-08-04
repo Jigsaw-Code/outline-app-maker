@@ -29,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-
         guard let decodedConfig = Data(base64Encoded: Config.smartDialer) else {
             return false
         }
