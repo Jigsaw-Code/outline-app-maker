@@ -3,7 +3,7 @@ module github.com/Jigsaw-Code/outline-app-maker
 go 1.24.0
 
 require (
-	github.com/Jigsaw-Code/outline-sdk/x v0.0.3
+	github.com/Jigsaw-Code/outline-sdk/x v0.0.4
 	golang.org/x/mobile v0.0.0-20250711185624-d5bb5ecc55c0
 )
 
