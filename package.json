@@ -1,5 +1,4 @@
 {
-  "name": "outline-app-maker",
   "dependencies": {
     "@ngrok/ngrok": "1.4.1",
     "archiver": "^7.0.1",
@@ -12,13 +11,11 @@
   "devDependencies": {
     "glob": "^11.0.1",
     "handlebars": "^4.7.8",
-    "vite": "^6.2.7"
-  },
-  "engines": {
-    "node": "22.x"
+    "vite": "^6.2.0"
   },
   "license": "Apache-2.0",
   "scripts": {
+    "build:mobileproxy": "bash ./.scripts/build_mobileproxy.sh",
     "build": "node ./wrapper_app_project/.scripts/build.mjs",
     "clean": "npx rimraf node_modules/ output/",
     "doctor": "./doctor",

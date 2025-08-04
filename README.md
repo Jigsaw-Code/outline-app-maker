@@ -1,6 +1,13 @@
-# Outline App Maker
+# Outline SDK Web Wrapper
 
 ## Getting Started
+
+Clone the SDK to a local folder and navigate to the `x/examples/website-wrapper-app` directory.
+
+```sh
+git clone https://github.com/Jigsaw-Code/outline-sdk
+cd outline-sdk/x/examples/website-wrapper-app
+```
 
 To verify that your system has the necessary dependencies to generate your web wrapper project, run the web wrapper doctor:
 
@@ -15,6 +22,7 @@ To verify that your system has the necessary dependencies to generate your web w
 > Currently only works with build targets of iOS 17.2 (and below?)
 
 * You will need the url you want to load initially in your app.
+* You will need [go](https://golang.org/) to build the SDK library.
 * You will need [Node.js](https://nodejs.org/en/) for the project setup and web server.
 * You will need [XCode](https://developer.apple.com/xcode/). 
 * You will need [cocoapods](https://cocoapods.org/). 
@@ -23,7 +31,7 @@ To verify that your system has the necessary dependencies to generate your web w
 
 ```sh
 npm run reset
-npm run build -- --platform=ios --entryUrl="https://www.example.com"
+npm run build:project -- --platform=ios --entryUrl="https://www.example.com"
 npm run open:ios
 ```
 
@@ -59,6 +67,7 @@ npx capacitor-assets generate --ios
 
 * You will need the url you want to load initially in your app.
 * You will need [Node.js](https://nodejs.org/en/) for the project setup and web server.
+* You will need [go](https://golang.org/) to build the SDK library.
 * You will need [JDK 17](https://stackoverflow.com/a/70649641) to build the app.
 * You will need [Android Studio](https://developer.android.com/studio/).
   * Make sure to [install the NDK](https://developer.android.com/studio/projects/install-ndk#default-version).
@@ -68,7 +77,7 @@ npx capacitor-assets generate --ios
 
 ```sh
 npm run reset
-npm run build -- --platform=android --entryUrl="https://www.example.com"
+npm run build:project -- --platform=android --entryUrl="https://www.example.com"
 npm run open:android
 ```
 

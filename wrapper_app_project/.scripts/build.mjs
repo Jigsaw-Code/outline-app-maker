@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import { exec } from 'node:child_process'
+import { exec, execFile } from 'node:child_process'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -41,6 +41,16 @@ const config = resolveConfiguration({
 const APP_TARGET_DIR = path.resolve(config.output, config.appName)
 const APP_TARGET_ZIP = path.resolve(config.output, `${config.appName}.zip`)
 
+const SDK_TARGET_BIN = path.resolve(config.output, 'mobileproxy')
+const SDK_TARGET_DIR = path.resolve(APP_TARGET_DIR, 'mobileproxy')
+
+try {
+  await fs.access(SDK_TARGET_BIN, fs.constants.F_OK)
+} catch (err) {
+  console.log(chalk.bgGreen(`Building the Outline SDK mobileproxy library for ${config.platform}...`))
+  await promisify(execFile)('npm', ['run', 'build:mobileproxy', config.platform, config.output])
+}
+
 const sourceFilepaths = await glob(
   path.join(TEMPLATE_DIR, '**', '*'),
   {
@@ -66,6 +76,9 @@ for (const sourceFilepath of sourceFilepaths) {
     await fs.cp(sourceFilepath, destinationFilepath)
   }
 }
+
+console.log(chalk.green('Copying mobileproxy files into the project...'))
+await fs.cp(SDK_TARGET_BIN, SDK_TARGET_DIR, { recursive: true })
 
 console.log(chalk.green('Installing external dependencies for the project...'))
 await promisify(exec)(`

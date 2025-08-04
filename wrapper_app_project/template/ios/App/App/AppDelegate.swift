@@ -1,17 +1,3 @@
-// Copyright 2025 The Outline Authors
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     https://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import Foundation
 import Capacitor
 import Mobileproxy
@@ -23,12 +9,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     private var proxy: MobileproxyProxy? = nil
+    private var smartOptions: MobileproxySmartDialerOptions? = nil
 
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
 
+        guard let decodedConfig = Data(base64Encoded: Config.smartDialer) else {
+            return false
+        }
+        let configString = String(data: decodedConfig, encoding: .utf8)
+        let testDomains = MobileproxyNewListFromLines(Config.domainList)
+        guard let options = MobileproxySmartDialerOptions(testDomains, config: configString) else {
+            return false
+        }
+        options.setLogWriter(MobileproxyNewStderrLogWriter())
+        options.setStrategyCache(UserDefaultsStrategyCache())
+        self.smartOptions = options
         self.resetViewController()
 
         return true
@@ -69,37 +67,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     @discardableResult
     private func tryProxy() -> Bool {
-        guard let smartDialerConfig = Data(base64Encoded: Config.smartDialer) else {
+        guard let dialer = try? self.smartOptions?.newStreamDialer() else {
             return false
         }
 
         var error: NSError?
-        if let dialer = MobileproxyNewSmartStreamDialer(
-            MobileproxyNewListFromLines(Config.domainList),
-            String(data: smartDialerConfig, encoding: .utf8),
-            MobileproxyNewStderrLogWriter(),
+        self.proxy = MobileproxyRunProxy(
+            "127.0.0.1:0",
+            dialer,
             &error
-        ) {
-            if error != nil {
-                return false
-            }
+        )
 
-            self.proxy = MobileproxyRunProxy(
-                "127.0.0.1:0",
-                dialer,
-                &error
-            )
+        Config.proxyPort = String(self.proxy?.port() ?? 0)
 
-            Config.proxyPort = String(self.proxy?.port() ?? 0)
-            
-            self.resetViewController()
+        self.resetViewController()
 
-            if error != nil {
-                return false
-            }
-        }
-
-        return true
+        return error == nil
     }
 
     private func resetViewController() {
