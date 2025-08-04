@@ -10,8 +10,8 @@ github.com/BurntSushi/toml v1.3.2 h1:o7IhLm0Msx3BaB+n3Ag7L8EVlByGnpq14C4YWiu/gL8
 github.com/BurntSushi/toml v1.3.2/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/Jigsaw-Code/outline-sdk v0.0.20 h1:4ep7MK9lFmcyPIRIbn4xrP1VKdJNsqR6+iJEOHDKnNg=
 github.com/Jigsaw-Code/outline-sdk v0.0.20/go.mod h1:CFDKyGZA4zatKE4vMLe8TyQpZCyINOeRFbMAmYHxodw=
-github.com/Jigsaw-Code/outline-sdk/x v0.0.3 h1:+TZ2BVcJPwI8BdYEqH/wQR1lNhq8HLB+nrXqyq+acFQ=
-github.com/Jigsaw-Code/outline-sdk/x v0.0.3/go.mod h1:l9BHj3M+4EPJyeDKWQlrtuppEC4P8Gfl+eKs1dyJZ2g=
+github.com/Jigsaw-Code/outline-sdk/x v0.0.4 h1:kJrBM44GoMtwjI9YqY2N6F4+KYreW5M6XEhE2HepJYs=
+github.com/Jigsaw-Code/outline-sdk/x v0.0.4/go.mod h1:l9BHj3M+4EPJyeDKWQlrtuppEC4P8Gfl+eKs1dyJZ2g=
 github.com/Jigsaw-Code/outline-ss-server v1.8.0 h1:6h7CZsyl1vQLz3nvxmL9FbhDug4QxJ1YTxm534eye1E=
 github.com/Jigsaw-Code/outline-ss-server v1.8.0/go.mod h1:slnHH3OZsQmZx/DRKhxvvaGE/8+n3Lkd6363h1ev71E=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
