@@ -34,6 +34,11 @@ jobs:
       - name: Generate Android Project
         run: npm run build -- --platform=android --entryUrl="https://www.example.com"
 
+      - name: Build Android App
+        run: |
+          cd output/Example
+          npx cap build android
+
   build_ios_project:
     name: Build iOS Project
     runs-on: macos-latest
@@ -59,6 +64,11 @@ jobs:
 
       - name: Generate iOS Project
         run: npm run build -- --platform=ios --entryUrl="https://www.example.com"
+
+      - name: Build iOS App
+        run: |
+          cd output/Example
+          npx cap build ios
 
   licensing:
     name: License Headers
