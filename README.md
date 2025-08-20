@@ -1,5 +1,7 @@
 # Outline App Maker
 
+A command-line tool for creating native Android and iOS applications that wrap your website with censorship-circumvention added.
+
 ## Getting Started
 
 To verify that your system has the necessary dependencies to generate your web wrapper project, run the web wrapper doctor:
@@ -16,7 +18,6 @@ To verify that your system has the necessary dependencies to generate your web w
 * You will need:
   * the url you want to load initially in your app.
   * [Node.js](https://nodejs.org/en/) for the project setup and web server.
-  * [go](https://golang.org/) to build the SDK library.
   * [JDK 17](https://stackoverflow.com/a/70649641) to build the app.
   * [Android Studio](https://developer.android.com/studio/).
     * Make sure to [install the NDK](https://developer.android.com/studio/projects/install-ndk#default-version).
@@ -34,9 +35,6 @@ Wait for Gradle to load your project. Click the "play" button in Android Studio 
 [See below for the list of available configuration options.](#available-configuration-options)
 
 ### Adding icon and splash screen assets to your generated Android project
-
-> [!NOTE]
-> TODO: automate this process
 
 You'll need to add the following images to the `assets` folder in your generated project:
 
@@ -63,7 +61,6 @@ npx capacitor-assets generate --android
 
 * You will need:
   * The url you want to load initially in your app.
-  * [go](https://golang.org/) to build the SDK library.
   * [Node.js](https://nodejs.org/en/) for the project setup and web server.
   * [XCode](https://developer.apple.com/xcode/). 
   * [cocoapods](https://cocoapods.org/). 
@@ -80,9 +77,6 @@ Click the "play" button in XCode to start your iOS app!
 [See below for the list of available configuration options.](#available-configuration-options)
 
 ### Adding icon and splash screen assets to your generated iOS project
-
-> [!NOTE]
-> TODO: automate this process
 
 You'll need to add the following images to the `assets` folder in your generated project:
 
